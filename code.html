@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <style>
+        /* CSS styling using BEM methodology */
+        .code-editor {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: #0074d9;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .code {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="code-editor">
+        <div class="toolbar">
+            <button class="button copy-button">Copy</button>
+            <button class="button save-button">Save</button>
+            <button class="button lock-button">Lock</button>
+        </div>
+        <pre class="code" contenteditable="true">
+            // Your code here
+        </pre>
+    </div>
+
+    <script>
+        const copyButton = document.querySelector(".copy-button");
+        const saveButton = document.querySelector(".save-button");
+        const lockButton = document.querySelector(".lock-button");
+        const codeElement = document.querySelector(".code");
+
+        copyButton.addEventListener("click", () => {
+            const textToCopy = codeElement.textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert("Code copied to clipboard!");
+            });
+        });
+
+        let isLocked = false;
+
+        lockButton.addEventListener("click", () => {
+            isLocked = !isLocked;
+            codeElement.contentEditable = !isLocked;
+            lockButton.textContent = isLocked ? "Unlock" : "Lock";
+        });
+
+        saveButton.addEventListener("click", () => {
+            alert("Code saved!"); // You can implement save functionality here.
+        });
+
+        codeElement.addEventListener("keydown", (e) => {
+            if (e.key === "Tab") {
+                e.preventDefault();
+                document.execCommand("insertText", false, "    "); // Insert 4 spaces for indentation.
+            }
+        });
+    </script>
+</body>
+</html>
